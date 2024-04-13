@@ -91,7 +91,7 @@ async function installRecommendedStock(ws, dId) {
       JSON.stringify({
         event: 'error',
         error: `An error occured while trying to install the stock app${dId !== 'CURRENT_DEVICE' ? ` for device ID ${dId}` : ''
-          }.\nPlease install the recommended version manually and run Builder again.`
+        }.\nPlease install the recommended version manually and run Builder again.`
       })
     );
   }
@@ -140,7 +140,7 @@ module.exports = async function getAppVersion(ws, message) {
           JSON.stringify({
             event: 'error',
             error:
-              "You either don't have a device plugged in or don't have ADB installed."
+              'You either don\'t have a device plugged in or don\'t have ADB installed.'
           })
         );
 

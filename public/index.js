@@ -24,7 +24,7 @@ function sendCommand(args) {
 function setApp() {
   const appChecked = document.querySelector('input[name="app"]:checked');
 
-  if (appChecked === null) return alert("You didn't select an app to patch!");
+  if (appChecked === null) return alert('You didn\'t select an app to patch!');
 
   sendCommand({
     event: 'selectApp',
@@ -77,7 +77,7 @@ function setPatches() {
     );
 
   if (selectedPatchList.length === 0)
-    return alert("You haven't selected any patches.");
+    return alert('You haven\'t selected any patches.');
 
   selectedPatchList = selectedPatchList.map((x) =>
     x.getAttribute('data-patch-name')
@@ -115,7 +115,7 @@ function setAppVersion(arch, version) {
     );
 
     if (arch == null && versionChecked === null)
-      return alert("You didn't select an app version!");
+      return alert('You didn\'t select an app version!');
 
     if (versionChecked !== null) {
       if (
@@ -123,7 +123,7 @@ function setAppVersion(arch, version) {
         versionChecked.getAttribute('data-recommended') !== '1'
       ) {
         const alertVersion = confirm(
-          "**Non-recommended version selected**\n***Are you sure?***\nThis version isn't recommended, do you really want to use this version?"
+          '**Non-recommended version selected**\n***Are you sure?***\nThis version isn\'t recommended, do you really want to use this version?'
         );
 
         if (!alertVersion) return;
@@ -153,7 +153,7 @@ function setAppVersion(arch, version) {
       '<progress value="0"></progress>';
     isDownloading = true;
   } else {
-    if (!hasFinished) return alert("Downloading process hasn't finished yet.");
+    if (!hasFinished) return alert('Downloading process hasn\'t finished yet.');
 
     location.href = '/patch';
   }
@@ -167,10 +167,10 @@ function getAppVersions(isRooted, page = 1) {
     <h1><i class="fa-solid fa-file-arrow-down"></i>Select the version you want to download</h1>
     <span>Versions marked as beta might have bugs or can be unstable, unless marked as recommended<span>
     ${
-      isRooted
-        ? '<span><strong>You are building rooted ReVanced</strong>, ReVanced Builder will automatically download the correct version for you.<br>If you didn\'t intend on doing a rooted build, include all "Root required to exclude" patches<span>'
-        : ''
-    }
+    isRooted
+      ? '<span><strong>You are building rooted ReVanced</strong>, ReVanced Builder will automatically download the correct version for you.<br>If you didn\'t intend on doing a rooted build, include all "Root required to exclude" patches<span>'
+      : ''
+  }
     `;
 
   const continueButton = document.getElementById('continue');
@@ -225,7 +225,7 @@ function setDevice() {
     (deviceElement.checked ? selectedDeviceList : []).push(deviceElement);
 
   if (selectedDeviceList.length === 0)
-    return alert("You haven't selected any devices.");
+    return alert('You haven\'t selected any devices.');
 
   selectedDeviceList = selectedDeviceList.map((x) => x.getAttribute('value'));
 
@@ -290,72 +290,70 @@ ws.onmessage = (msg) => {
   const message = JSON.parse(msg.data);
 
   switch (message.event) {
-    case 'patchList':
-      {
-        uploadedApk = message.uploadedApk;
-        const len = message.patchList.length;
+    case 'patchList': {
+      uploadedApk = message.uploadedApk;
+      const len = message.patchList.length;
 
-        const patchListElement = document.getElementById('patchList');
+      const patchListElement = document.getElementById('patchList');
 
-        for (let i = 0; i < len; i++) {
-          const patch = message.patchList[i];
+      for (let i = 0; i < len; i++) {
+        const patch = message.patchList[i];
 
-          patchListElement.innerHTML += `<li>
+        patchListElement.innerHTML += `<li>
   <input class="select" id="select-patch-${i}" data-patch-name="${
-            patch.name
-          }" data-excluded="${patch.excluded ? '1' : '0'}" type="checkbox">
+          patch.name
+        }" data-excluded="${patch.excluded ? '1' : '0'}" type="checkbox">
   <label for="select-patch-${i}">
   ${
-    patch.isRooted
-      ? '<span class="no-root"><strong>Needed for Non-Root Building</strong></span>'
-      : ''
-  }
+          patch.isRooted
+            ? '<span class="no-root"><strong>Needed for Non-Root Building</strong></span>'
+            : ''
+        }
     <span><strong class="patchName">${toTitleCase(
-      patch.name
-    )}</strong>&nbsp;&nbsp;(${
-            patch.maxVersion !== ' ' ? patch.maxVersion : 'ALL'
-          })</span>
+          patch.name
+        )}</strong>&nbsp;&nbsp;(${
+          patch.maxVersion !== ' ' ? patch.maxVersion : 'ALL'
+        })</span>
     <span class="patch-description">${patch.description}</span>
   </label>
 </li>`;
-        }
+      }
 
-        addSearch(true);
+      addSearch(true);
 
-        Array.from(document.getElementsByClassName('select'))
-          .filter((patch) =>
-            message.rememberedPatchList.includes(
-              patch.getAttribute('data-patch-name')
-            )
+      Array.from(document.getElementsByClassName('select'))
+        .filter((patch) =>
+          message.rememberedPatchList.includes(
+            patch.getAttribute('data-patch-name')
           )
-          .forEach((patch) => (patch.checked = true));
-      }
+        )
+        .forEach((patch) => (patch.checked = true));
+    }
       break;
-    case 'downloadingFile':
-      {
-        isDownloading = true;
+    case 'downloadingFile': {
+      isDownloading = true;
 
-        let logElement = document.getElementsByClassName('log')[0];
+      let logElement = document.getElementsByClassName('log')[0];
 
-        if (!logElement) {
-          document.getElementById('content').innerHTML =
-            '<span class="log"></span>';
-          document.getElementsByTagName('main')[0].innerHTML +=
-            '<progress value="0"></progress>';
-          logElement = document.getElementsByClassName('log')[0];
-        }
-
-        const downloadMessage = `<span class="log-line"><strong>[builder]</strong> Downloading ${message.name}...</span><br/>`;
-
-        if (currentFile !== message.name) {
-          currentFile = message.name;
-          logElement.innerHTML += downloadMessage;
-        }
-
-        document.getElementsByTagName('progress')[0].value = (
-          message.percentage / 100
-        ).toString();
+      if (!logElement) {
+        document.getElementById('content').innerHTML =
+          '<span class="log"></span>';
+        document.getElementsByTagName('main')[0].innerHTML +=
+          '<progress value="0"></progress>';
+        logElement = document.getElementsByClassName('log')[0];
       }
+
+      const downloadMessage = `<span class="log-line"><strong>[builder]</strong> Downloading ${message.name}...</span><br/>`;
+
+      if (currentFile !== message.name) {
+        currentFile = message.name;
+        logElement.innerHTML += downloadMessage;
+      }
+
+      document.getElementsByTagName('progress')[0].value = (
+        message.percentage / 100
+      ).toString();
+    }
       break;
     case 'finished':
       hasFinished = true;
@@ -367,168 +365,163 @@ ws.onmessage = (msg) => {
       document.getElementsByClassName('log')[0].innerHTML +=
         '<span class="log-line"><strong>[builder]</strong> Finished downloading files.</span><br/>';
       break;
-    case 'appVersions':
-      {
-        const len = message.versionList.length;
+    case 'appVersions': {
+      const len = message.versionList.length;
 
-        const versionsElement = document.getElementById('versions');
-        versionsElement.innerHTML = '';
+      const versionsElement = document.getElementById('versions');
+      versionsElement.innerHTML = '';
 
-        versionsElement.innerHTML += `
+      versionsElement.innerHTML += `
           <li>
           ${
-            message.page != 1
-              ? `<button id="prevPage" onclick="getAppVersions(${
-                  message.isRooted
-                }, ${message.page - 1})">Previous Page</button>`
-              : ''
-          }
+        message.page != 1
+          ? `<button id="prevPage" onclick="getAppVersions(${
+            message.isRooted
+          }, ${message.page - 1})">Previous Page</button>`
+          : ''
+      }
           <button id="nextPage" onclick="getAppVersions(${message.isRooted}, ${
-          message.page + 1
-        })">Next Page</button>
+        message.page + 1
+      })">Next Page</button>
         </li>`;
 
-        for (let i = 0; i < len; i++) {
-          const version = message.versionList[i];
-          const noRec = version.recommended == 'NOREC';
-          const recommended = version.recommended ? 1 : 0;
-          versionsElement.innerHTML += `
+      for (let i = 0; i < len; i++) {
+        const version = message.versionList[i];
+        const noRec = version.recommended == 'NOREC';
+        const recommended = version.recommended ? 1 : 0;
+        versionsElement.innerHTML += `
             <li>
             <input type="radio" name="version" id="app-${i}" value="${
-            version.version
-          }" data-beta="${version.beta ? '1' : '0'}" ${
-            !noRec ? 'data-recommended="' + recommended + '"' : ''
-          }/>
+          version.version
+        }" data-beta="${version.beta ? '1' : '0'}" ${
+          !noRec ? 'data-recommended="' + recommended + '"' : ''
+        }/>
             <label for="app-${i}">${version.version} ${
-            version.beta ? ' (beta)' : ''
-          } ${
-            !noRec ? (version.recommended ? ' (recommended)' : '') : ''
-          }</label></li>`;
-        }
+          version.beta ? ' (beta)' : ''
+        } ${
+          !noRec ? (version.recommended ? ' (recommended)' : '') : ''
+        }</label></li>`;
+      }
 
-        if (
-          message.selectedApp === 'com.google.android.apps.youtube.music' &&
-          !message.foundDevice
-        )
-          document.getElementById('continue').onclick = () => {
-            const version = document.querySelector(
-              'input[name="version"]:checked'
-            ).value;
+      if (
+        message.selectedApp === 'com.google.android.apps.youtube.music' &&
+        !message.foundDevice
+      )
+        document.getElementById('continue').onclick = () => {
+          const version = document.querySelector(
+            'input[name="version"]:checked'
+          ).value;
 
-            document.getElementsByTagName('header')[0].innerHTML = `
+          document.getElementsByTagName('header')[0].innerHTML = `
           <h1><i class="fa-solid fa-rectangle-list"></i>Please select the architecture</h1>
           <span>YouTube Music APKs only have specific architecture APKs.
           <br>If you don't know which one to choose, either look at your devices architecture using CPU-Z or select Arm64.</span>`;
-            document.getElementById('versions').innerHTML = `
+          document.getElementById('versions').innerHTML = `
           <li>
           <input type="radio" name="arch" id="arch-1" value="arm64-v8a"/>
           <label for="arch-1">Arm64 (armv8)</label></li>
           <li>
           <input type="radio" name="arch" id="arch-2" value="armeabi-v7a"/>
           <label for="arch-2">Arm32 (armv7)</label></li>`;
-            document.getElementById('continue').onclick = () => {
-              if (isDownloading && hasFinished) location.href = '/patch';
-
-              document.getElementById('continue').classList.add('disabled');
-
-              setAppVersion(
-                document.querySelector('input[name="arch"]:checked').value,
-                version
-              );
-            };
-          };
-      }
-      break;
-    case 'installingStockApp':
-      {
-        if (message.status === 'DOWNLOAD_STARTED') {
-          document.getElementsByTagName('header')[0].innerHTML =
-            '<h1><i class="fa-solid fa-download"></i>Downloading APK</h1>';
-          document.getElementById('content').innerHTML =
-            '<span class="log"></span>';
-          document.getElementsByTagName('main')[0].innerHTML +=
-            '<progress value="0"></progress>';
-          isDownloading = true;
-          document.getElementById('continue').classList.add('disabled');
-        } else if (message.status === 'DOWNLOAD_COMPLETE') {
-          document.getElementById('continue').classList.add('disabled');
-          isDownloading = false;
-          document.getElementsByClassName(
-            'log'
-          )[0].innerHTML += `<span class="log-line info"><strong>[builder]</strong> Uninstalling the stock app...</span><br>`;
-        } else if (message.status === 'UNINSTALL_COMPLETE') {
-          document.getElementsByClassName(
-            'log'
-          )[0].innerHTML += `<span class="log-line info"><strong>[builder]</strong> Installing the downloaded (stock) APK...</span><br>`;
-        } else if (message.status === 'ALL_DONE') {
-          document.getElementsByClassName(
-            'log'
-          )[0].innerHTML += `<span class="log-line info"><strong>[builder]</strong> Complete.</span><br>`;
-          document.getElementById('continue').classList.remove('disabled');
           document.getElementById('continue').onclick = () => {
-            location.href = '/patch';
+            if (isDownloading && hasFinished) location.href = '/patch';
+
+            document.getElementById('continue').classList.add('disabled');
+
+            setAppVersion(
+              document.querySelector('input[name="arch"]:checked').value,
+              version
+            );
           };
-        }
-      }
+        };
+    }
       break;
-    case 'patchLog':
-      {
-        const logLevel = message.log.includes('WARNING')
-          ? 'warn'
-          : message.log.includes('SEVERE')
+    case 'installingStockApp': {
+      if (message.status === 'DOWNLOAD_STARTED') {
+        document.getElementsByTagName('header')[0].innerHTML =
+          '<h1><i class="fa-solid fa-download"></i>Downloading APK</h1>';
+        document.getElementById('content').innerHTML =
+          '<span class="log"></span>';
+        document.getElementsByTagName('main')[0].innerHTML +=
+          '<progress value="0"></progress>';
+        isDownloading = true;
+        document.getElementById('continue').classList.add('disabled');
+      } else if (message.status === 'DOWNLOAD_COMPLETE') {
+        document.getElementById('continue').classList.add('disabled');
+        isDownloading = false;
+        document.getElementsByClassName(
+          'log'
+        )[0].innerHTML += `<span class="log-line info"><strong>[builder]</strong> Uninstalling the stock app...</span><br>`;
+      } else if (message.status === 'UNINSTALL_COMPLETE') {
+        document.getElementsByClassName(
+          'log'
+        )[0].innerHTML += `<span class="log-line info"><strong>[builder]</strong> Installing the downloaded (stock) APK...</span><br>`;
+      } else if (message.status === 'ALL_DONE') {
+        document.getElementsByClassName(
+          'log'
+        )[0].innerHTML += `<span class="log-line info"><strong>[builder]</strong> Complete.</span><br>`;
+        document.getElementById('continue').classList.remove('disabled');
+        document.getElementById('continue').onclick = () => {
+          location.href = '/patch';
+        };
+      }
+    }
+      break;
+    case 'patchLog': {
+      const logLevel = message.log.includes('WARNING')
+        ? 'warn'
+        : message.log.includes('SEVERE')
           ? 'error'
           : 'info';
 
-        document.getElementsByClassName(
-          'log'
-        )[0].innerHTML += `<span class="log-line ${logLevel}"><strong>[builder]</strong> ${message.log}</span><br>`;
+      document.getElementsByClassName(
+        'log'
+      )[0].innerHTML += `<span class="log-line ${logLevel}"><strong>[builder]</strong> ${message.log}</span><br>`;
 
-        const logWrap = document.getElementById('content--wrapper');
-        logWrap.scrollTop = logWrap.scrollHeight;
-      }
+      const logWrap = document.getElementById('content--wrapper');
+      logWrap.scrollTop = logWrap.scrollHeight;
+    }
       break;
-    case 'fileExists':
-      {
-        // TODO: on a root install, if the file already exists and the user selects yes it skips checking if a device is plugged in
-        document.getElementsByTagName('header')[0].innerHTML = `
+    case 'fileExists': {
+      // TODO: on a root install, if the file already exists and the user selects yes it skips checking if a device is plugged in
+      document.getElementsByTagName('header')[0].innerHTML = `
             <h1><i class="fa-solid fa-file-arrow-down"></i>Use already downloaded APK?</h1>
             <span>The APK already exists in the revanced folder.${
-              message.isRooted ? ' ' : '<br>'
-            }Do you want to use it?${
-          message.isRooted
-            ? '<br>(Saying no is recommended for rooted building)<br>If you didn\'t intend on doing a rooted build, include all "Root required to exclude" patches'
-            : ''
-        }</span>`;
+        message.isRooted ? ' ' : '<br>'
+      }Do you want to use it?${
+        message.isRooted
+          ? '<br>(Saying no is recommended for rooted building)<br>If you didn\'t intend on doing a rooted build, include all "Root required to exclude" patches'
+          : ''
+      }</span>`;
 
-        const continueButton = document.getElementById('continue');
-        const backButton = document.getElementById('back');
+      const continueButton = document.getElementById('continue');
+      const backButton = document.getElementById('back');
 
-        continueButton.innerHTML = 'Yes';
-        continueButton.onclick = () => {
-          location.href = '/patch';
-        };
-        backButton.innerHTML = 'No';
-        backButton.onclick = () => getAppVersions(message.isRooted);
-      }
+      continueButton.innerHTML = 'Yes';
+      continueButton.onclick = () => {
+        location.href = '/patch';
+      };
+      backButton.innerHTML = 'No';
+      backButton.onclick = () => getAppVersions(message.isRooted);
+    }
       break;
     case 'fileDoesntExist':
       getAppVersions(message.isRooted);
       break;
-    case 'buildFinished':
-      {
-        if (message.install) location.href = '/installer';
-        document.getElementsByTagName('header')[0].innerHTML =
-          '<h1><i class="fa-solid fa-square-check"></i>Finished</h1>';
+    case 'buildFinished': {
+      if (message.install) location.href = '/installer';
+      document.getElementsByTagName('header')[0].innerHTML =
+        '<h1><i class="fa-solid fa-square-check"></i>Finished</h1>';
 
-        const firstFooterElement = document.getElementsByTagName('footer')[0];
+      const firstFooterElement = document.getElementsByTagName('footer')[0];
 
-        if (!WS_URI.startsWith('ws://localhost'))
-          firstFooterElement.innerHTML +=
-            '<button class="highlighted" onclick="window.open(\'/revanced.apk\', \'_blank\')">Download</button>';
-
+      if (!WS_URI.startsWith('ws://localhost'))
         firstFooterElement.innerHTML +=
-          '<button class="highlighted" onclick="location.href = \'/\'">Build Again</button><button onclick="exitApp();">Quit</button>';
-      }
+          '<button class="highlighted" onclick="window.open(\'/revanced.apk\', \'_blank\')">Download</button>';
+
+      firstFooterElement.innerHTML +=
+        '<button class="highlighted" onclick="location.href = \'/\'">Build Again</button><button onclick="exitApp();">Quit</button>';
+    }
       break;
     case 'error':
       location.href = `/failure?error=${message.error}`;
@@ -572,25 +565,24 @@ ws.onmessage = (msg) => {
       }
       break;
     }
-    case 'askRootVersion':
-      {
-        const confirmVer = confirm(
-          `**Non Recommended Version**\nYour device has a non recommended version. This means you have to let the builder replace the stock YouTube with a recommended version.\nContinue?`
-        );
+    case 'askRootVersion': {
+      const confirmVer = confirm(
+        `**Non Recommended Version**\nYour device has a non recommended version. This means you have to let the builder replace the stock YouTube with a recommended version.\nContinue?`
+      );
 
-        if (confirmVer)
+      if (confirmVer)
+        return sendCommand({
+          event: 'getAppVersion',
+          installLatestRecommended: true
+        });
+      else {
+        if (confirm('Alright, proceed with the non-recommended version?'))
           return sendCommand({
             event: 'getAppVersion',
-            installLatestRecommended: true
+            useVer: true
           });
-        else {
-          if (confirm('Alright, proceed with the non-recommended version?'))
-            return sendCommand({
-              event: 'getAppVersion',
-              useVer: true
-            });
-        }
       }
+    }
       break;
     case 'appList': {
       let id = 0;
@@ -623,7 +615,7 @@ ws.onmessage = (msg) => {
       document.querySelector('.shw').style.display = 'block';
       document
         .getElementById('continue')
-        .setAttribute('onClick', "location.href = '/patches'");
+        .setAttribute('onClick', 'location.href = \'/patches\'');
       break;
     }
 

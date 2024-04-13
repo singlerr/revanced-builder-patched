@@ -23,14 +23,14 @@ accentColors.forEach((color) => {
   });
 });
 
-document.getElementById('autoBtn').addEventListener('click', function () {
+document.getElementById('autoBtn').addEventListener('click', function() {
   if (localStorage.getItem('auto-next')) {
     localStorage.removeItem('auto-next');
   } else {
     localStorage.setItem('auto-next', true);
   }
 });
-document.getElementById('blackBtn').addEventListener('click', function () {
+document.getElementById('blackBtn').addEventListener('click', function() {
   if (localStorage.getItem('black-theme')) {
     localStorage.removeItem('black-theme');
     dElement.classList.remove('black');

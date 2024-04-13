@@ -28,7 +28,8 @@ module.exports = async function mountReVanced(pkg, ws) {
       `su -mm -c 'stock_path="$(pm path ${pkg} | grep base | sed 's/package://g')" && umount -l "$stock_path"'`
     );
     // eslint-disable-next-line no-empty
-  } catch {} // An error occured, probably because there is no existing ReVanced APK to be unmounted, ignore it and continue
+  } catch {
+  } // An error occured, probably because there is no existing ReVanced APK to be unmounted, ignore it and continue
 
   // Move APK to folder
   await exec(

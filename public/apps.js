@@ -11,6 +11,7 @@ apkField.addEventListener('change', () => {
     document.getElementById('content').appendChild(info);
   }
 });
+
 function postFile() {
   document.querySelector('ul').style.display = 'none';
   document.querySelector('.upl').style.display = 'none';
@@ -24,7 +25,7 @@ function postFile() {
   formdata.append('apk', apkField.files[0]);
   let request = new XMLHttpRequest();
 
-  request.upload.addEventListener('progress', function (e) {
+  request.upload.addEventListener('progress', function(e) {
     let file1Size = apkField.files[0].size;
 
     if (e.loaded <= file1Size) {

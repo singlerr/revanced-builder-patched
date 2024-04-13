@@ -30,8 +30,8 @@ module.exports = async function parsePatch(packageName, hasRoot) {
     /** @type {string} */
     let compatibleVersion;
 
-    if(patch.compatiblePackages){
-      for (const pkg of patch.compatiblePackages){
+    if (patch.compatiblePackages) {
+      for (const pkg of patch.compatiblePackages) {
         if (pkg.name === packageName) {
           isCompatible = true;
 
@@ -45,8 +45,6 @@ module.exports = async function parsePatch(packageName, hasRoot) {
     }
 
 
-
-
     if (!isCompatible) {
       if (patch.compatiblePackages && patch.compatiblePackages.length !== 0) continue;
     }
@@ -54,7 +52,7 @@ module.exports = async function parsePatch(packageName, hasRoot) {
     if (isRooted && !hasRoot) continue;
 
 
-    if(patch.dependencies){
+    if (patch.dependencies) {
       for (const dependencyName of patch.dependencies) {
         if (dependencyName.includes('integrations')) {
           global.jarNames.patch.integrations = true;

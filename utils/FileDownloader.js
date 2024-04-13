@@ -27,7 +27,7 @@ async function overWriteJarNames(fileName) {
   if (fileName.endsWith('.json')) global.jarNames.patchesList = filePath;
 }
 
-function isJar(fileName){
+function isJar(fileName) {
   return fileName.endsWith('.jar');
 }
 

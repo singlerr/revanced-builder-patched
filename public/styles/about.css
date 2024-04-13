@@ -1,17 +1,17 @@
 .mobile {
-  display: none;
+    display: none;
 }
 
 @media only screen and (max-width: 900px) {
-  .desktop {
-    display: none;
-  }
+    .desktop {
+        display: none;
+    }
 
-  .mobile {
-    display: block;
-  }
+    .mobile {
+        display: block;
+    }
 }
 
 a {
-  color: #ddd;
+    color: #ddd;
 }

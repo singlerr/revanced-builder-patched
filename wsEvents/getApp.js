@@ -20,6 +20,7 @@ async function fetchPackages(packages) {
 
   return response.data;
 }
+
 /**
  * @param {import('ws').WebSocket} ws
  */
@@ -31,7 +32,7 @@ module.exports = async function getPatches(ws) {
   const list = [];
 
   for (const patches of patchesList) {
-    if(! patches.compatiblePackages)
+    if (!patches.compatiblePackages)
       continue;
 
     for (const packages of patches.compatiblePackages) {

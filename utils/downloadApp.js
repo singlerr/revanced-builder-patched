@@ -37,20 +37,20 @@ async function downloadApp(ws) {
   const dlLink =
     arch &&
     global.jarNames.selectedApp.packageName ===
-      'com.google.android.apps.youtube.music'
+    'com.google.android.apps.youtube.music'
       ? $(`div:contains("${arch}")`)
-          .parent()
-          .children('div[class^="table-cell rowheight"]')
-          .first()
-          .children('a[class="accent_color"]')
-          .first()
-          .attr('href')
+        .parent()
+        .children('div[class^="table-cell rowheight"]')
+        .first()
+        .children('a[class="accent_color"]')
+        .first()
+        .attr('href')
       : $('span[class="apkm-badge"]')
-          .first()
-          .parent()
-          .children('a[class="accent_color"]')
-          .first()
-          .attr('href');
+        .first()
+        .parent()
+        .children('a[class="accent_color"]')
+        .first()
+        .attr('href');
 
   if (!dlLink) {
     return ws.send(

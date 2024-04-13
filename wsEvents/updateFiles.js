@@ -57,7 +57,7 @@ module.exports = async function updateFiles(ws) {
       JSON.stringify({
         event: 'error',
         error:
-          "Downloading process hasn't finished and you tried to download again."
+          'Downloading process hasn\'t finished and you tried to download again.'
       })
     );
 

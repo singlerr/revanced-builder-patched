@@ -2,23 +2,30 @@
 
 ## NOTICE
 
-ReVanced Builder is discontinued, and RVB v4 is postponed indefinitely. Thanks for everyone who has used ReVanced Builder before. I have made an another project, [TizenTube](https://github.com/reisxd/TizenTube). In short, TizenTube is a way to experience ad-free and sponsor-free YT experience on your Tizen TVs. 
+ReVanced Builder is discontinued, and RVB v4 is postponed indefinitely. Thanks for everyone who has used ReVanced
+Builder before. I have made an another project, [TizenTube](https://github.com/reisxd/TizenTube). In short, TizenTube is
+a way to experience ad-free and sponsor-free YT experience on your Tizen TVs.
 
 ---
 
-This project will allow you to download the APK of any of the [officially supported](https://github.com/revanced/revanced-patches#-patches) apps and build ReVanced easily!
+This project will allow you to download the APK of any of
+the [officially supported](https://github.com/revanced/revanced-patches#-patches) apps and build ReVanced easily!
 
 ## Required
 
-You'll need at least [Zulu JDK 17](https://www.azul.com/downloads/?version=java-17-lts&package=jdk) and [ADB](https://developer.android.com/studio/command-line/adb) (optional, required only for rooted phones).
+You'll need at least [Zulu JDK 17](https://www.azul.com/downloads/?version=java-17-lts&package=jdk)
+and [ADB](https://developer.android.com/studio/command-line/adb) (optional, required only for rooted phones).
 
 If you plan to use it from source, you'll also require [Node.js >= 16](https://nodejs.org/).
 
 ## How to use
 
-If you are on a PC, download the latest executable from [here](https://github.com/reisxd/revanced-builder/releases/latest) or if you are on a Android device, please see [this](https://github.com/reisxd/revanced-builder/wiki/How-to-use-revanced-builder-on-Android).
+If you are on a PC, download the latest executable
+from [here](https://github.com/reisxd/revanced-builder/releases/latest) or if you are on a Android device, please
+see [this](https://github.com/reisxd/revanced-builder/wiki/How-to-use-revanced-builder-on-Android).
 
-**NOTE: If you intend to build the rooted version of either YouTube or YouTube Music, you must have the stock YouTube app to be the same version as the one chosen for building. Otherwise, the build will fail.**
+**NOTE: If you intend to build the rooted version of either YouTube or YouTube Music, you must have the stock YouTube
+app to be the same version as the one chosen for building. Otherwise, the build will fail.**
 
 ## For developers
 
@@ -26,7 +33,8 @@ For developers, see [this](https://github.com/reisxd/revanced-builder/blob/main/
 
 ## How to use (Docker)
 
-Required [docker](https://docs.docker.com/get-docker/) and [docker-compose (for \*nix cli)](https://docs.docker.com/compose/install/linux/) must be installed
+Required [docker](https://docs.docker.com/get-docker/)
+and [docker-compose (for \*nix cli)](https://docs.docker.com/compose/install/linux/) must be installed
 
 **Note:** If you're using Docker Desktop, `docker-compose` will be pre-installed.
 
@@ -38,7 +46,8 @@ Clone the repository and `cd` into the directory `revanced-builder`
 docker-compose build --pull --no-cache
 ```
 
-This builds the Docker image (`--no-cache` is used to build the image from scratch; sometimes the cache might cause version conflicts).
+This builds the Docker image (`--no-cache` is used to build the image from scratch; sometimes the cache might cause
+version conflicts).
 
 After building, launch the container (runs at `localhost:8000`):
 
@@ -77,6 +86,7 @@ docker rm <name_of_container> -f
 docker rmi <name_of_the_image> -f
 ```
 
-To update to a newer version of Builder, stop the existing container if it is running, build the container start it again.
+To update to a newer version of Builder, stop the existing container if it is running, build the container start it
+again.
 
 In both the builds, a persistent storage is kept. All the builds are stored in `<path/to>/revanced-builder/revanced/`.

@@ -1,15 +1,17 @@
 const { EOL } = require('node:os');
 
 const exec = require('./promisifiedExec.js');
+
 function sendError(ws) {
   ws.send(
     JSON.stringify({
       event: 'error',
       error:
-        "The app you selected is not installed on your device. It's needed for rooted ReVanced."
+        'The app you selected is not installed on your device. It\'s needed for rooted ReVanced.'
     })
   );
 }
+
 async function getAppVersion_(pkgName, ws, shouldReturnMsg, deviceId) {
   try {
     const { stdout, stderr } = await exec(

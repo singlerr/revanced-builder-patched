@@ -1,6 +1,7 @@
 const { join: joinPath } = require('node:path');
 
 const fetch = require('node-fetch');
+const fetchCompatible = require('./ioUtils.js');
 const { load } = require('cheerio');
 const { dloadFromURL } = require('./FileDownloader.js');
 
@@ -12,11 +13,11 @@ async function downloadApp(ws) {
   const apkMirrorVersionArg = version.replace(/\./g, '-');
   const link = global.jarNames.selectedApp.link;
 
-  let versionDownload = await fetch(
+  let versionDownload = await fetchCompatible(
     `https://www.apkmirror.com${link}${
       link.split('/')[3]
     }-${apkMirrorVersionArg}-release/`
-  );
+  );//Fix - Add User-Agent to retrieve full html contents.
 
   if (!versionDownload.ok) {
     ws.send(
@@ -59,7 +60,7 @@ async function downloadApp(ws) {
       })
     );
   }
-  const downloadLinkPage = await fetch(
+  const downloadLinkPage = await fetchCompatible(
     `https://www.apkmirror.com${dlLink}`
   ).then((res) => res.text());
 
@@ -68,7 +69,7 @@ async function downloadApp(ws) {
     .first()
     .attr('href');
 
-  const downloadPage = await fetch(`https://www.apkmirror.com${pageLink}`).then(
+  const downloadPage = await fetchCompatible(`https://www.apkmirror.com${pageLink}`).then(
     (res) => res.text()
   );
   const $3 = load(downloadPage);

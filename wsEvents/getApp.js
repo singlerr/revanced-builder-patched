@@ -10,12 +10,12 @@ async function fetchPackages(packages) {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        'User-Agent': 'Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.231 Mobile Safari/537.36',
         Authorization:
           'Basic YXBpLXRvb2xib3gtZm9yLWdvb2dsZS1wbGF5OkNiVVcgQVVMZyBNRVJXIHU4M3IgS0s0SCBEbmJL'
       }
     }
   );
-
   const response = await request.json();
 
   return response.data;
@@ -31,6 +31,9 @@ module.exports = async function getPatches(ws) {
   const list = [];
 
   for (const patches of patchesList) {
+    if(! patches.compatiblePackages)
+      continue;
+
     for (const packages of patches.compatiblePackages) {
       if (!appsList.some((el) => el.pname === packages.name))
         appsList.push({ pname: packages.name });

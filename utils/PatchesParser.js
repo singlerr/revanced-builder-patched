@@ -30,32 +30,42 @@ module.exports = async function parsePatch(packageName, hasRoot) {
     /** @type {string} */
     let compatibleVersion;
 
-    for (const pkg of patch.compatiblePackages)
-      if (pkg.name === packageName) {
-        isCompatible = true;
+    if(patch.compatiblePackages){
+      for (const pkg of patch.compatiblePackages){
+        if (pkg.name === packageName) {
+          isCompatible = true;
 
-        if (pkg.versions.length !== 0) {
-          compatibleVersion = pkg.versions.at(-1);
+          if (pkg.versions && pkg.versions.length !== 0) {
+            compatibleVersion = pkg.versions.at(-1);
 
-          global.versions.push(compatibleVersion);
+            global.versions.push(compatibleVersion);
+          }
         }
       }
+    }
+
+
+
 
     if (!isCompatible) {
-      if (patch.compatiblePackages.length !== 0) continue;
+      if (patch.compatiblePackages && patch.compatiblePackages.length !== 0) continue;
     }
 
     if (isRooted && !hasRoot) continue;
 
-    for (const dependencyName of patch.dependencies) {
-      if (dependencyName.includes('integrations')) {
-        global.jarNames.patch.integrations = true;
-      } else {
-        if (!global.jarNames.patch.integrations) {
-          global.jarNames.patch.integrations = false;
+
+    if(patch.dependencies){
+      for (const dependencyName of patch.dependencies) {
+        if (dependencyName.includes('integrations')) {
+          global.jarNames.patch.integrations = true;
+        } else {
+          if (!global.jarNames.patch.integrations) {
+            global.jarNames.patch.integrations = false;
+          }
         }
       }
     }
+
 
     patches.push({
       name: patch.name,

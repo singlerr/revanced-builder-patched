@@ -29,7 +29,11 @@ const sanitizeVersion = (ver) => {
  * @returns
  */
 async function getPage(url) {
-  return fetch(url).then((res) => res.text());
+  return fetch(url, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.231 Mobile Safari/537.36'
+    } //Fix - Add User-Agent to retrieve full html contents.
+  }).then((res) => res.text());
 }
 
 async function installRecommendedStock(ws, dId) {

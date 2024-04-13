@@ -154,13 +154,16 @@ module.exports = async function patchApp(ws) {
   const args = [
     '-jar',
     global.jarNames.cli,
+    'patch',
+    `${join(global.revancedDir, global.jarNames.selectedApp.packageName)}.apk`,
     '-b',
     global.jarNames.patchesJar,
-    '-t',
-    './revanced-cache',
-    '--experimental',
-    '-a',
-    `${join(global.revancedDir, global.jarNames.selectedApp.packageName)}.apk`,
+    '-m',
+    global.jarNames.integrations,
+    '--options',
+    './options.json',
+    '-f',
+    '-p',
     '-o',
     join(global.revancedDir, 'revanced.apk')
   ];
@@ -170,12 +173,8 @@ module.exports = async function patchApp(ws) {
     args.push(join(global.revancedDir, 'aapt2'));
   }
 
-  if (global.jarNames.patch.integrations) {
-    args.push('-m');
-    args.push(global.jarNames.integrations);
-  }
-
-  args.push(...global.jarNames.patches.split(' '));
+  args.push(...global.jarNames.includedPatches);
+  args.push(...global.jarNames.excludedPatches);
 
   const buildProcess = spawn(global.javaCmd, args);
 
@@ -187,7 +186,7 @@ module.exports = async function patchApp(ws) {
       })
     );
 
-    if (data.toString().includes('Finished')) await afterBuild(ws);
+    if (data.toString().includes('Purged') || data.toString().includes('purge')) await afterBuild(ws);
 
     if (data.toString().includes('INSTALL_FAILED_UPDATE_INCOMPATIBLE')) {
       await reinstallReVanced(ws);
@@ -205,7 +204,8 @@ module.exports = async function patchApp(ws) {
       })
     );
 
-    if (data.toString().includes('Finished')) await afterBuild(ws);
+    if (data.toString().includes('Purged') || data.toString().includes('purge')) await afterBuild(ws);
+
 
     if (data.toString().includes('INSTALL_FAILED_UPDATE_INCOMPATIBLE')) {
       await reinstallReVanced(ws);

@@ -3,6 +3,7 @@ const { join: joinPath } = require('node:path');
 
 const { load } = require('cheerio');
 const fetch = require('node-fetch');
+const fetchCompatible = require('./ioUtils.js');
 const Progress = require('node-fetch-progress');
 
 /** @type {import('ws').WebSocket} */
@@ -13,9 +14,9 @@ let ws;
  */
 async function overWriteJarNames(fileName) {
   const filePath = joinPath(global.revancedDir, fileName);
-  if (fileName.includes('revanced-cli')) global.jarNames.cli = filePath;
+  if (fileName.includes('revanced-cli') && isJar(fileName)) global.jarNames.cli = filePath;
 
-  if (fileName.includes('revanced-patches') && fileName.endsWith('.jar'))
+  if (fileName.includes('revanced-patches') && isJar(fileName))
     global.jarNames.patchesJar = filePath;
 
   if (fileName.endsWith('.apk') && !fileName.startsWith('VancedMicroG'))
@@ -24,6 +25,10 @@ async function overWriteJarNames(fileName) {
   if (fileName.startsWith('VancedMicroG')) global.jarNames.microG = filePath;
 
   if (fileName.endsWith('.json')) global.jarNames.patchesList = filePath;
+}
+
+function isJar(fileName){
+  return fileName.endsWith('.jar');
 }
 
 /**
@@ -114,7 +119,7 @@ async function dloadFromURL(url, outputPath, websocket) {
   if (websocket != null) ws = websocket;
 
   try {
-    const res = await fetch(url);
+    const res = await fetchCompatible(url);
     const writeStream = createWriteStream(outputPath);
     const downloadStream = res.body.pipe(writeStream);
 

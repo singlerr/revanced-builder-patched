@@ -46,10 +46,6 @@ module.exports = async function updateFiles(ws) {
     {
       owner: integrations[0],
       repo: integrations[1]
-    },
-    {
-      owner: 'TeamVanced',
-      repo: 'VancedMicroG'
     }
   ];
 
